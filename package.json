@@ -1,0 +1,26 @@
+{
+  "name": "el-notion",
+  "version": "1.0.0",
+  "description": "Electron Notion App",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haledov/el-notion.git"
+  },
+  "keywords": [
+    "notion"
+  ],
+  "author": "haledov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haledov/el-notion/issues"
+  },
+  "homepage": "https://github.com/haledov/el-notion#readme",
+  "devDependencies": {
+    "electron": "^15.3.0"
+  }
+}
