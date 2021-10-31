@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
-const path = require('path')
+const {app, BrowserWindow, BrowserView} = require('electron');
+const path = require('path');
+const electronReload = require('electron-reload');
 
 function createWindow () {
   // Create the browser window.
@@ -8,16 +9,23 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.ts')
     }
   })
 
-  // and load the index.html of the app.
-  // mainWindow.loadFile('index.html')
-  mainWindow.loadURL('https://notion.so')
 
+  const view = new BrowserView();
+  mainWindow.setBrowserView(view);
+  view.setBounds({ x: 0, y: 0, width: 800, height: 600 });
+  view.setAutoResize({width:true, height: true})
+  view.webContents.loadURL('https://notion.so');
+
+  // mainWindow.loadURL('https://notion.so');
+  view.webContents.once('dom-ready', () => {
+    console.log('Notion Loaded');
+  });
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  view.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
