@@ -6,26 +6,48 @@ const electronReload = require('electron-reload');
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 1000,
     webPreferences: {
       preload: path.join(__dirname, 'preload.ts')
     }
   })
 
+  const loading = new BrowserView();
+  mainWindow.setBrowserView(loading);
+  loading.setBounds({ x: 0, y: 0, width: 1000, height: 1000 });
+  loading.setAutoResize({width:true, height: true})
+  loading.webContents.loadURL(`file://${__dirname}/index.html`);
+  loading.webContents.once('dom-ready', ()=>{
+    console.log('INDEX IS LOADED');
+  });
 
   const view = new BrowserView();
-  mainWindow.setBrowserView(view);
-  view.setBounds({ x: 0, y: 0, width: 800, height: 600 });
-  view.setAutoResize({width:true, height: true})
-  view.webContents.loadURL('https://notion.so');
-
-  // mainWindow.loadURL('https://notion.so');
   view.webContents.once('dom-ready', () => {
     console.log('Notion Loaded');
+    setTimeout(() => {
+      // mainWindow.removeBrowserView(loading);
+      loading.setBounds({ x: 0, y: 0, width: 0, height: 0 });
+      view.setBounds({ x: 0, y: 0, width: 1000, height: 1000 });
+      view.setAutoResize({width:true, height: true});
+      mainWindow.setBrowserView(view);
+    });
+
+    // view.setBounds({ x: 0, y: 0, width: 800, height: 600 });
   });
+
+  view.webContents.loadURL('https://notion.so');
+
+  // mainWindow.loadURL(`file://${__dirname}/index.html`);
+
+  // Loading View
+
+
+
+
+
   // Open the DevTools.
-  view.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
